@@ -84,7 +84,7 @@ public class BasballScheduler {
     @Scheduled(cron = "0 0 0,6,12,18 * * ?")
     public void fetchingUpcomingNBAGames() throws IOException, InterruptedException, JSONException {
         String scheduleDay = s3FileService.getS3FileContent(filename);
-        log.info(scheduleDay + "날짜의 NBA 경기를 가져옵니다");
+        log.info(scheduleDay + "날짜의 MLB 경기를 가져옵니다");
         LocalDate localDate = LocalDate.parse(scheduleDay, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         String season = SchedulerUtils.calculateSeason("NBA", localDate);
 
@@ -106,7 +106,7 @@ public class BasballScheduler {
 
         JSONArray gameList = jsonObject.getJSONArray("response");
         log.info(
-            "=============================================== NBA 경기 추가 ===============================================");
+            "=============================================== MLB 경기 추가 ===============================================");
         log.info(gameList.toString());
 
         for (int i = 0; i < gameList.length(); i++) {
@@ -143,9 +143,9 @@ public class BasballScheduler {
                 awayTeamLogo, awayTeamName, homeTeamLogo,
                 homeTeamName, leagueLogo, venueName);
 
-            s3FileService.deleteFile(filename);
-            s3FileService.uploadFile(filename, localDate.plusDays(1).toString());
         }
+        s3FileService.deleteFile(filename);
+        s3FileService.uploadFile(filename, localDate.plusDays(1).toString());
     }
 
 }

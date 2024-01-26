@@ -29,6 +29,7 @@ public class BasketBallScheduler {
     @Value("${api.key}")
     private String apiKey;
     private final String filename = "basketball.txt";
+
     @Scheduled(cron = "0 12,24,36,48 * * * ?")
     public void updateTodayNbaGames() throws IOException, InterruptedException, JSONException {
         LocalDate now = LocalDate.now(ZoneId.of("Asia/Seoul"));
@@ -139,10 +140,9 @@ public class BasketBallScheduler {
                 LocalDateTime.now(), localDateTime, LocalDateTime.now(),
                 awayTeamLogo, awayTeamName, homeTeamLogo,
                 homeTeamName, leagueLogo, venueName);
-
-            s3FileService.deleteFile(filename);
-            s3FileService.uploadFile(filename, localDate.plusDays(1).toString());
         }
+        s3FileService.deleteFile(filename);
+        s3FileService.uploadFile(filename, localDate.plusDays(1).toString());
     }
 
 }
